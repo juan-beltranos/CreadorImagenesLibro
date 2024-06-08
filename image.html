@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pokémon Coloring Book</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'GAGALIN';
+            src: url('https://example.com/path-to-gagalin-font/GAGALIN.woff2') format('woff2');
+        }
+
+        #spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="generate">Generate Coloring Book</button>
+    <div id="spinner">Loading...</div>
+    <script>
+
+        document.getElementById('generate').addEventListener('click', async () => {
+            const pokeAPI = 'https://pokeapi.co/api/v2/pokemon?limit=250';
+            const zip = new JSZip();
+            document.getElementById('spinner').style.display = 'block';
+
+            try {
+                const response = await fetch(pokeAPI);
+                const data = await response.json();
+                const pokemons = data.results.map((pokemon, index) => ({
+                    name: pokemon.name,
+                    index: index + 1
+                }));
+
+                // Mezcla la lista de Pokémon
+                const shuffledPokemons = pokemons.sort(() => 0.5 - Math.random());
+
+                // Selecciona los primeros 100
+                const selectedPokemons = shuffledPokemons.slice(0, 100);
+
+                for (let i = 0; i < selectedPokemons.length; i++) {
+                    const pokemonName = selectedPokemons[i].name.charAt(0).toUpperCase() + selectedPokemons[i].name.slice(1);
+                    const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${selectedPokemons[i].index}.png`;
+                    const image = await loadImage(imageUrl);
+
+                    const titledSketch = await addTitleAndSmallImageToImage(image, pokemonName.toUpperCase(), image);
+                    const imgData = titledSketch.replace(/^data:image\/(png|jpg);base64,/, "");
+                    zip.file(`pokemon_${selectedPokemons[i].index}.png`, imgData, { base64: true });
+                }
+
+                zip.generateAsync({ type: "blob" }).then(function (content) {
+                    saveAs(content, "pokemon_coloring_book.zip");
+                    document.getElementById('spinner').style.display = 'none';
+                });
+
+            } catch (error) {
+                console.error('Failed to generate coloring book:', error);
+                document.getElementById('spinner').style.display = 'none';
+            }
+        });
+
+        function loadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.onload = () => resolve(img);
+                img.onerror = () => reject(new Error('Failed to load image from ' + url));
+                img.src = url;
+            });
+        }
+
+        function addTitleAndSmallImageToImage(imageDataUrl, title, originalImage) {
+
+            return new Promise((resolve) => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                const padding = 15;
+                const fontSize = 24;
+                const titleHeight = fontSize + padding * 2;
+                const smallImageWidth = originalImage.width * 0.1;
+                const smallImageHeight = originalImage.height * 0.1;
+
+                canvas.width = originalImage.width;
+                canvas.height = originalImage.height + titleHeight;
+
+                // Draw title
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0, 0, canvas.width, titleHeight);
+                ctx.fillStyle = '#FFF';
+                ctx.font = `${fontSize}px GAGALIN`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(title, canvas.width / 2, titleHeight / 2);
+
+                // Draw original color image
+                ctx.drawImage(originalImage, 0, titleHeight);
+
+                // Draw small color image in the upper left corner
+                ctx.drawImage(originalImage, padding + 80, padding - 10, smallImageWidth, smallImageHeight);
+
+                resolve(canvas.toDataURL('image/png'));
+            });
+        }
+
+    </script>
+</body>
+
+</html>
