@@ -44,12 +44,13 @@
                 const shuffledPokemons = pokemons.sort(() => 0.5 - Math.random());
 
                 // Selecciona los primeros 100
-                const selectedPokemons = shuffledPokemons.slice(0, 100);
+                const selectedPokemons = shuffledPokemons.slice(0, 80);
 
                 for (let i = 0; i < selectedPokemons.length; i++) {
                     const pokemonName = selectedPokemons[i].name.charAt(0).toUpperCase() + selectedPokemons[i].name.slice(1);
                     const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${selectedPokemons[i].index}.png`;
                     const image = await loadImage(imageUrl);
+
 
                     const titledSketch = await addTitleAndSmallImageToImage(image, pokemonName.toUpperCase(), image);
                     const imgData = titledSketch.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -103,9 +104,6 @@
 
                 // Draw original color image
                 ctx.drawImage(originalImage, 0, titleHeight);
-
-                // Draw small color image in the upper left corner
-                ctx.drawImage(originalImage, padding + 80, padding - 10, smallImageWidth, smallImageHeight);
 
                 resolve(canvas.toDataURL('image/png'));
             });

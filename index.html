@@ -1,134 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Pokémon Coloring Book</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Characters</title>
+    <link rel="stylesheet" href="css/styles.css">
+
 </head>
 
 <body>
-    <button id="generate">Generate Coloring Book</button>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script>
 
-        const { jsPDF } = window.jspdf;
+    <h1 class="title">Generador de imágenes para libros de colorear destinado a niños</h1>
+    <section>
+        <div class="category">
+            <div class="button-container">
+                <!-- Botones de series de anime -->
+                <button id="pokemonBtn" class="button">
+                    <img src="https://elcomercio.pe/resizer/CBVv1xCALK6pH240mKjNNXLvFhQ=/580x330/smart/filters:format(jpeg):quality(75)/arc-anglerfish-arc2-prod-elcomercio.s3.amazonaws.com/public/5R6WHEYHGFH2XJNGRWEOLONB3A.jpg"
+                        alt="Pokemon">
+                    <span class="button-text">POKEMON</span>
+                </button>
 
-        document.getElementById('generate').addEventListener('click', async () => {
-            const doc = new jsPDF();
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-            const imageWidth = pageWidth * 0.8;
-            const imageHeight = pageHeight * 0.8;
-            const xOffset = (pageWidth - imageWidth) / 2;
-            const yOffset = (pageHeight - imageHeight) / 2;
+                <button id="narutoBtn" class="button">
+                    <img src="https://cdn.myanimelist.net/images/anime/13/17405.jpg" alt="Naruto">
+                    <span class="button-text">NARUTO</span>
+                </button>
 
-            const pokeAPI = 'https://pokeapi.co/api/v2/pokemon?limit=10';
+                <button id="dragonBallBtn" class="button">
+                    <img src="https://imgsrv.crunchyroll.com/cdn-cgi/image/fit=contain,format=auto,quality=85,width=480,height=720/catalog/crunchyroll/35e4ac6339f5fdcc164160a5755790cd.jpe"
+                        alt="Dragon Ball">
+                    <span class="button-text">DRAGON BALL</span>
+                </button>
 
-            const response = await fetch(pokeAPI);
-            const data = await response.json();
-            const pokemons = data.results;
+                <button id="digimonBtn" class="button">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/4/43/Digimon_Digital_Monsters_Season_1_DVD_Cover.png"
+                        alt="Digimon">
+                    <span class="button-text">DIGIMON</span>
+                </button>
 
-            for (let i = 0; i < pokemons.length; i++) {
+                <button id="demonSlayerBtn" class="button">
+                    <img src="https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDctY2Y4YS00NmM4LTljMmItZTFkOTExNGI3ODRhXkEyXkFqcGdeQXVyNjc3MjQzNTI@._V1_.jpg"
+                        alt="Demon Slayer">
+                    <span class="button-text">DEMON SLAYER</span>
+                </button>
 
-                const imageUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${i}.png`;
-                const image = await loadImage(imageUrl);
-                // Blanco y negro
-                const sketch = convertToSketch(image);
+                <button id="marvelBtn" class="button">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLE6Z07I6Ai57Imu6sikmFVTINKVwx3ltzTQ&s"
+                        alt="Marvel">
+                    <span class="button-text">MARVEL</span>
+                </button>
 
-                doc.addImage(image, 'PNG', xOffset, yOffset, imageWidth, imageHeight); // Ajustar al 80% de la página
-                if (i < pokemons.length - 1) {
-                    doc.addPage();
-                }
-            }
+                <button id="rickyAndMortyBtn" class="button">
+                    <img src="https://m.media-amazon.com/images/M/MV5BZjRjOTFkOTktZWUzMi00YzMyLThkMmYtMjEwNmQyNzliYTNmXkEyXkFqcGdeQXVyNzQ1ODk3MTQ@._V1_FMjpg_UX1000_.jpg"
+                        alt="Rick and Morty">
+                    <span class="button-text">RICKY AND MORTY</span>
+                </button>
 
-            doc.save('pokemon_coloring_book.pdf');
-        });
+                <button id="barbieBtn" class="button">
+                    <img src="https://i5.walmartimages.com/seo/Happy-Birthday-Barbie-Doll_d5b44a18-0997-47ca-87c0-dc032eaa2c0c.7268125968ad468257c4d58d8be1d5cb.jpeg"
+                        alt="Barbie">
+                    <span class="button-text">BARBIE</span>
+                </button>
 
-        function loadImage(url) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = 'Anonymous';
-                img.onload = () => resolve(img);
-                img.onerror = () => reject(new Error('Failed to load image'));
-                img.src = url;
-            });
-        }
+                <!-- Botones de animales -->
+                <button id="mamiferosBtn" class="button">
+                    <img src="https://img.freepik.com/vector-premium/conjunto-mascotas-dibujos-animados-coleccion-varios-mamiferos-domesticos-roedores-aves-reptiles_178630-266.jpg"
+                        alt="Mamíferos">
+                    <span class="button-text">MAMÍFEROS</span>
+                </button>
 
-        function convertToSketch(image) {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = image.width;
-            canvas.height = image.height;
-            ctx.drawImage(image, 0, 0);
-            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const data = imgData.data;
+                <button id="anfibiosBtn" class="button">
+                    <img src="https://i.pinimg.com/736x/59/15/f9/5915f97c6467ab6e6ac332354b13871e.jpg" alt="Anfibios">
+                    <span class="button-text">ANFIBIOS</span>
+                </button>
 
-            // Convert image to grayscale
-            for (let i = 0; i < data.length; i += 4) {
-                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                data[i] = avg;
-                data[i + 1] = avg;
-                data[i + 2] = avg;
-                data[i + 3] = 255;
-            }
+                <button id="aererosBtn" class="button">
+                    <img src="https://i.pinimg.com/originals/d4/b6/1c/d4b61ce76f2e9b61975186c7904d535c.jpg"
+                        alt="Aéreos">
+                    <span class="button-text">AÉREOS</span>
+                </button>
 
-            // Edge detection using Sobel operator
-            const sobelData = sobelFilter(imgData);
-            ctx.putImageData(sobelData, 0, 0);
+                <button id="marinosBtn" class="button">
+                    <img src="https://previews.123rf.com/images/makc76/makc762207/makc76220700024/188426528-peces-y-animales-marinos-aislados-en-fondo-blanco-conjunto-de-dibujos-animados-de-divertidos.jpg"
+                        alt="Marinos">
+                    <span class="button-text">MARINOS</span>
+                </button>
 
-            return canvas.toDataURL('image/png');
-        }
+                <button id="allAnimalsBtn" class="button">
+                    <img src="https://previews.123rf.com/images/insima/insima1301/insima130100018/17272624-establecer-con-los-animales-de-dibujos-animados-para-los-beb%C3%A9s-y-ni%C3%B1os-peque%C3%B1os-im%C3%A1genes.jpg"
+                        alt="Todos">
+                    <span class="button-text">TODOS</span>
+                </button>
+            </div>
+        </div>
+    </section>
 
-        function sobelFilter(imgData) {
-            const width = imgData.width;
-            const height = imgData.height;
-            const data = imgData.data;
-            const grayscale = new Uint8ClampedArray(data.length / 4);
 
-            // Convert image to grayscale
-            for (let i = 0; i < data.length; i += 4) {
-                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                grayscale[i / 4] = avg;
-            }
 
-            const sobelData = new Uint8ClampedArray(data.length);
-
-            const kernelX = [
-                [-1, 0, 1],
-                [-2, 0, 2],
-                [-1, 0, 1]
-            ];
-
-            const kernelY = [
-                [-1, -2, -1],
-                [0, 0, 0],
-                [1, 2, 1]
-            ];
-
-            for (let y = 1; y < height - 1; y++) {
-                for (let x = 1; x < width - 1; x++) {
-                    let pixelX = 0;
-                    let pixelY = 0;
-
-                    for (let ky = -1; ky <= 1; ky++) {
-                        for (let kx = -1; kx <= 1; kx++) {
-                            const pos = (y + ky) * width + (x + kx);
-                            const val = grayscale[pos];
-                            pixelX += val * kernelX[ky + 1][kx + 1];
-                            pixelY += val * kernelY[ky + 1][kx + 1];
-                        }
-                    }
-
-                    const magnitude = Math.sqrt(pixelX * pixelX + pixelY * pixelY) >>> 0;
-                    const index = (y * width + x) * 4;
-                    sobelData[index] = sobelData[index + 1] = sobelData[index + 2] = magnitude > 128 ? 0 : 255;
-                    sobelData[index + 3] = 255;
-                }
-            }
-
-            return new ImageData(sobelData, width, height);
-        }
-
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/models/anime.js"></script>
+    <script src="js/models/animals.js"></script>
 </body>
 
 </html>
