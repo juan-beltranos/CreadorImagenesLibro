@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Characters</title>
     <link rel="stylesheet" href="css/styles.css">
-
 </head>
 
 <body>
 
     <h1 class="title">Generador de imágenes para libros de colorear destinado a niños</h1>
+
+
+    <form action="">
+        <h2>Ingresar API KEY Leonardo IA</h2>
+        <input type="text" placeholder="xxxxxxxx-xxx-xxxx-xxx-xxxxxxxxxxxx" id="apikeyleo">
+    </form>
+
+
     <section>
         <div class="category">
             <div class="button-container">
@@ -105,7 +112,8 @@
                 </button>
 
                 <button id="fantasyBtn" class="button">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgZVUdUnj8jxlMdi2gXHQ37QOfByFhFPC10A&s">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgZVUdUnj8jxlMdi2gXHQ37QOfByFhFPC10A&s">
                     <span class="button-text">Fantasy and Magical Creatures</span>
                 </button>
 
@@ -175,6 +183,12 @@
                     <span class="button-text">Abstract Art and Patterns</span>
                 </button>
 
+                <button id="modernBtn" class="button">
+                    <img src="https://res.cloudinary.com/vistaprint/image/upload/c_scale,w_448,h_262,dpr_2/f_auto,q_auto/v1706173774/ideas-and-advice-prod/blogadmin/Screenshot-2024-01-25-at-10.09.19.png?_i=AA"
+                        alt="Modern Elements">
+                    <span class="button-text">Modern Elements</span>
+                </button>
+
             </div>
         </div>
     </section>
@@ -182,15 +196,41 @@
     <div class="loading-overlay">
         <div class="spinner"></div>
     </div>
-    
+
+    <!-- Botón para abrir el modal -->
+    <!-- <button id="openModalBtn" class="open-modal-button">Open Modal</button> -->
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="closeModalBtn" class="close-button">&times;</span>
+            <h2>Informacion para publicar en Amazon KDP</h2>
+            <div id="modalResponse">Loading...</div>
+
+            <button id="modal-pdf">Descargar PDF</button>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "@google/generative-ai": "https://esm.run/@google/generative-ai"
+            }
+        }
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/models/anime/anime.js"></script>
-
-    <script src="js/models/animals/animals.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     
-    <script src="js/models/all/all.js"></script>
+    <script src="js/models/anime/anime.js"></script>
+    <script src="js/models/animals/animals.js"></script>
+    <script src="js/models/all/all.js"></script> 
+
+    <script type="module" src="js/script.js"></script>
+
 
 </body>
 
